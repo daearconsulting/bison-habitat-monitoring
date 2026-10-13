@@ -30,9 +30,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+   build:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: cu-bison-partnership
     steps:
       - uses: actions/checkout@v4
 

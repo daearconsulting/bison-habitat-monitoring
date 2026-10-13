@@ -1,0 +1,42 @@
+{
+  "datasets": {
+    "area": {
+      "status": "ok",
+      "source": "Screening box set in site.yaml",
+      "url": "",
+      "retrieved_utc": "2026-10-13 16:46",
+      "note": "",
+      "files": [
+        "area.geojson"
+      ]
+    },
+    "landcover": {
+      "status": "ok",
+      "source": "Annual NLCD 2024 (fixed-vintage mask)",
+      "url": "https://www.mrlc.gov/data/annual-nlcd-land-cover-2024-conus",
+      "retrieved_utc": "2026-10-13 16:46",
+      "note": "Classes 52/71; excludes crops, hay/pasture and developed land. Does not establish native species or water reliability.",
+      "files": [
+        "rangeland_mask.tif"
+      ]
+    },
+    "rap": {
+      "status": "ok",
+      "source": "Rangeland Analysis Platform v3 (USDA-NRCS, BLM, Univ. of Montana)",
+      "url": "https://rangelands.app/",
+      "retrieved_utc": "2026-10-13 16:46",
+      "note": "Vegetation cover, 2025; 15 blocks found",
+      "files": [
+        "rap_perennial_cover.tif",
+        "rap_tree_cover.tif",
+        "open_grassland.tif",
+        "grassland_blocks.geojson"
+      ]
+    }
+  },
+  "mode": "real",
+  "eligible_acres": 1726460.7754130708,
+  "eligible_region_pct": 42.09372571872572,
+  "eligible_grid_fraction_pct": 42.093725718725715,
+  "latest_rap_year": 2025
+}

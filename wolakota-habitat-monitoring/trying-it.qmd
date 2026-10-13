@@ -1,0 +1,41 @@
+---
+title: "If Wolakota wanted to try this"
+subtitle: "Choices, effort, and who would hold the information"
+---
+
+::: {.lead}
+None of this needs to be adopted all at once, or at all. Monitoring can start small, with free public data, and grow only if it proves useful. Every step up adds information the Wolakota team would own and control.
+:::
+
+## Four levels, from lightest to most involved
+
+| Level | What it adds | Effort | Information the team would hold |
+|---|---|---|---|
+| **1. Look at public data** | Yearly forage, drought, fire, and invasive grass maps like the ones on this site | A few hours a year | None. Everything comes from national public sources. |
+| **2. A regular report** | A page like this one, rebuilt automatically each year or season for the team's own area | A partner sets it up; little upkeep after | Pasture or range boundaries, if the team chooses to add them |
+| **3. Check it on the ground** | Photo points, simple forage clipping, rain gauges, and recorded water points, compared with the satellite numbers each year | A few days a season | Field records, photos, and water locations |
+| **4. Watch the herd** | Herd counts and movement, for example from GPS collars on a few animals | Ongoing staff time and equipment | Herd numbers and movements, which are sensitive operational information |
+
+Most of the value comes from Levels 1 to 3. Level 3 is where satellite estimates become trustworthy for one specific range, because they are checked against what people see.
+
+## Decisions that belong to the Wolakota team
+
+- **Whether any of this is wanted.** The team may already watch the land in ways that work.
+- **What questions matter most.** Forage, water, fire, invasive grasses, or something not on this site at all.
+- **Who holds the information.** Where records live, and under whose control.
+- **Who can see what.** Some things could be public (like these maps); others, like water points and herd numbers, are often best kept private.
+- **How knowledge from the land fits in.** What the people who work with the herd know, and how, or whether, it is recorded.
+- **Who helps.** Wolakota already works with partners. A local Tribal college, a Tribal land office, or Tribal natural resource staff could also run or teach parts of this.
+
+## How information could stay under Tribal control
+
+If the team went past Level 1, a few practices keep control where it belongs:
+
+1. **Keep Tribal records separate from the public layer.** The public maps can be rebuilt by anyone; the team's own records sit in a separate, private place it controls.
+2. **Write down who decides.** A short agreement saying who approves sharing, publishing, or reuse of the team's information.
+3. **Attach the rules to the data.** Each record carries a note on where it came from and who may use it, so the rules travel with the information.
+4. **Start private.** Nothing the team adds is shared until the team decides it should be.
+
+## A light way to look further
+
+If the team were curious, one low-cost next step would be a short conversation about which one or two questions on this site matter most, followed by a single-season trial at Level 2 for the team's own area. That trial would show whether the information gets used before anyone commits more time.

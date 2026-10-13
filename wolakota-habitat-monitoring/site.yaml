@@ -1,0 +1,51 @@
+# Site settings: the one file to edit to change where and what this site describes.
+# Everything place-specific lives here, so the code never needs editing to change the area.
+
+site_title: "Watching the Range"
+site_subtitle: "What buffalo habitat monitoring could look like for Wolakota"
+
+# Study area. The boundary comes from public Census data (TIGER AIANNH, Rosebud).
+# This is a regional, landscape-scale extent, NOT the Wolakota range boundary.
+# If the Wolakota team ever chooses to share a range boundary, point `boundary_file`
+# at it (any GeoJSON/GeoPackage) and the whole site will re-run for that area.
+area:
+  label: "Rosebud region"
+  census_aiannh_name: "Rosebud"
+  boundary_file: null
+  # Optional clip box (min_lon, min_lat, max_lon, max_lat) to keep the region compact.
+  # The Census Rosebud boundary includes scattered trust parcels in several counties;
+  # this box keeps the core area around Todd and Mellette counties.
+  clip_bbox: [-101.25, 42.99, -100.18, 43.62]
+
+# Counties used for drought statistics (5-digit FIPS codes)
+drought_area_label: "Todd and Mellette counties"
+drought_counties:
+  "46121": "Todd County, SD"
+  "46095": "Mellette County, SD"
+
+# Rangeland Analysis Platform (RAP) settings
+rap:
+  first_year: 1986
+  # Resolution (meters, approximate) for maps shown on the site. Coarser = smaller pages.
+  map_resolution_m: 90
+  # Resolution used for long-term yearly averages (faster to compute).
+  series_resolution_m: 240
+
+# Forage planning example (used on the "Forage and herd size" page only).
+# These are common textbook starting values, shown so readers can see how the
+# arithmetic works. They are NOT recommendations for any herd.
+forage_example:
+  example_acres: 1000
+  harvest_efficiency_pct: 25          # share of forage grazed; the rest stays for soil, wildlife, and drought reserve
+  lbs_per_animal_unit_month: 915      # NRCS planning value for a 1,000 lb animal, air-dry forage
+  animal_units_per_adult_bison: 1.0   # varies by sex and age; many managers use 1.0-1.25
+
+landcover:
+  year: 2024
+  raster: "https://data.naturalcapitalalliance.stanford.edu/download/global/NLCD/LandCover/MRLC_Annual_NLCD_LndCov_2024_c1v1.tif"
+  source_url: "https://www.mrlc.gov/data/annual-nlcd-land-cover-2024-conus"
+  include_classes: [52, 71]
+
+validation:
+  required_datasets: [area, landcover, rap, drought, water, fire]
+  max_age_days: {area: 400, landcover: 400, rap: 400, drought: 21, water: 400, fire: 400}

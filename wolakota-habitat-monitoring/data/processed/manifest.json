@@ -1,0 +1,73 @@
+{
+  "datasets": {
+    "area": {
+      "status": "demo",
+      "source": "Synthetic preview data",
+      "url": "",
+      "retrieved_utc": "2026-10-13 16:38",
+      "note": "Not real data. Rebuild with `python scripts/build_data.py` before sharing.",
+      "files": [
+        "area.geojson"
+      ]
+    },
+    "rap": {
+      "status": "demo",
+      "source": "Synthetic preview data",
+      "url": "",
+      "retrieved_utc": "2026-10-13 16:38",
+      "note": "Not real data. Rebuild with `python scripts/build_data.py` before sharing.",
+      "files": [
+        "rap_annual.csv",
+        "rap_annual_change.tif",
+        "rap_annual_cover.tif",
+        "rap_forage.tif",
+        "rap_forage_anomaly.tif",
+        "rap_perennial_cover.tif"
+      ]
+    },
+    "drought": {
+      "status": "demo",
+      "source": "Synthetic preview data",
+      "url": "",
+      "retrieved_utc": "2026-10-13 16:38",
+      "note": "Not real data. Rebuild with `python scripts/build_data.py` before sharing.",
+      "files": [
+        "drought_weekly.csv"
+      ]
+    },
+    "water": {
+      "status": "demo",
+      "source": "Synthetic preview data",
+      "url": "",
+      "retrieved_utc": "2026-10-13 16:38",
+      "note": "Not real data. Rebuild with `python scripts/build_data.py` before sharing.",
+      "files": [
+        "water_bodies.geojson",
+        "water_distance_km.tif",
+        "water_streams.geojson"
+      ]
+    },
+    "fire": {
+      "status": "demo",
+      "source": "Synthetic preview data",
+      "url": "",
+      "retrieved_utc": "2026-10-13 16:38",
+      "note": "Not real data. Rebuild with `python scripts/build_data.py` before sharing.",
+      "files": [
+        "fire_perimeters.geojson"
+      ]
+    },
+    "landcover": {
+      "status": "demo",
+      "source": "Synthetic preview mask",
+      "url": "",
+      "retrieved_utc": "2026-10-13 16:38",
+      "note": "",
+      "files": [
+        "rangeland_mask.tif"
+      ]
+    }
+  },
+  "mode": "demo",
+  "latest_rap_year": 2024
+}

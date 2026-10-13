@@ -1,0 +1,91 @@
+---
+title: "Buffalo on the Front Range"
+subtitle: "Why CU Boulder, and what a partnership with Tribal Nations could look like"
+toc: false
+---
+
+```{python}
+#| output: asis
+from sitekit import show
+print(show.preview_banner())
+```
+
+::: {.lead}
+Colorado already has working examples of public institutions raising buffalo and returning them to Tribal Nations. CU Boulder could join that work in a way that fits a research university: through science, teaching, and long-term relationships with Tribal Nations, with Tribal Nations guiding the parts that are theirs to guide.
+:::
+
+::: {.facts}
+::: {.fact}
+::: {.num}
+2015
+:::
+::: {.lbl}
+year Colorado State University and local partners started a conservation herd near Fort Collins
+:::
+:::
+::: {.fact}
+::: {.num}
+39
+:::
+::: {.lbl}
+buffalo that herd sent to three Tribal Nations in a single 2022 transfer
+:::
+:::
+::: {.fact}
+::: {.num}
+85
+:::
+::: {.lbl}
+buffalo the City of Denver donated to Tribal Nations from 2021 to March 2023
+:::
+:::
+::: {.fact}
+::: {.num}
+28,000
+:::
+::: {.lbl}
+acres of grassland, approximately, on Wolakota: a Tribally owned and managed range in South Dakota
+:::
+:::
+:::
+
+## The question
+
+Leaders at CU Boulder have reasonably asked what role a university has in a buffalo herd. Colorado's own examples suggest an answer: **a university does not need to own a herd to play an essential role in one.** It brings research, students, convening power, and long-term commitment.
+
+## What CU could bring
+
+::: {.cards}
+[**Research** <br>Grassland, soil, water, fire, and climate science on a working landscape, with questions shaped together with Tribal partners.](why-cu.qmd#research){.card-link}
+
+[**Teaching** <br>Field courses and student research for CU students and students from Tribal colleges, side by side.](why-cu.qmd#teaching){.card-link}
+
+[**Partnerships on the land** <br>Working with cities, counties, and federal land managers that already manage open space and herds.](why-cu.qmd#land){.card-link}
+
+[**Relationships with Tribal Nations** <br>A lasting commitment that goes beyond statements, built around a goal many Tribal Nations are already pursuing: returning buffalo to the land.](why-cu.qmd#relationships){.card-link}
+:::
+
+## How a partnership could work
+
+```{mermaid}
+flowchart TB
+  T["Tribal Nations<br/>cultural direction, priorities,<br/>where buffalo go"]
+  L["Land partners<br/>city, county, or<br/>federal open space"]
+  C["CU Boulder<br/>research, students,<br/>convening, data"]
+  H(["A herd and the land it lives on"])
+  T --> H
+  L --> H
+  C --> H
+```
+
+Three versions of this, from lightest to most involved, are laid out on [Partnership models](partnership.qmd). In every version, CU's part would be shaped with Tribal Nations from the start, and existing partners such as the InterTribal Buffalo Council would have a place at the table.
+
+## A first step
+
+The lightest first step is a **planning year**: CU convenes Tribal Nations, the people who already run Colorado's herds, and interested faculty, and listens before proposing anything. [A first step](next-steps.qmd) describes what that year could include.
+
+## Read more
+
+- [Colorado already does this](precedents.qmd): the herds and partnerships already working in the state.
+- [Why CU](why-cu.qmd): what a research university brings that others do not.
+- [Where grassland is](landscape.qmd): a map of large open grasslands in the region, for discussion.

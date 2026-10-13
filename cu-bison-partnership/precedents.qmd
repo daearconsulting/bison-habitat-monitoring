@@ -1,0 +1,51 @@
+---
+title: "Colorado already does this"
+subtitle: "Herds and partnerships already working in the state and region"
+---
+
+```{python}
+#| output: asis
+from sitekit import show
+from sitekit.config import load_site
+print(show.preview_banner())
+```
+
+::: {.lead}
+Within an hour or two of Boulder, public institutions already raise buffalo and send them to Tribal Nations. A CU partnership would join this work, not invent it.
+:::
+
+## The herds near Boulder
+
+```{python}
+m = show.base_map()
+show.places_layer(m, load_site()["places"])
+display(show.finish(m, height=480))
+```
+
+::: {.map-caption}
+Locations are approximate, for orientation only. Hover over a point to see its name.
+:::
+
+## How each one works
+
+| Herd | Started | Who runs it | University role | Connection to Tribal Nations |
+|---|---|---|---|---|
+| [Laramie Foothills Bison Conservation Herd](https://newsmediarelations.colostate.edu/2022/04/11/record-relocation-csu-partners-provide-39-laramie-foothills-bison-to-3-native-nations/), north of Fort Collins | 2015, with 10 animals | City of Fort Collins, Larimer County, and Colorado State University | CSU researchers used reproductive science to produce disease-free buffalo with Yellowstone genetics | Has sent buffalo to Tribal Nations, including 39 to the Osage Nation, Cherokee Nation, and Prairie Band Potawatomi Nation in 2022, with recipients chosen by the InterTribal Buffalo Council |
+| [Denver Mountain Parks herds](https://denverite.com/2023/03/15/denver-donates-30-bison-to-tribal-nations/), Genesee Park and Daniels Park | Longstanding city herds | City and County of Denver | None | Since 2021, the city donates surplus yearlings to Tribal Nations instead of auctioning them: 85 buffalo by March 2023, under an agreement running through 2030 |
+| Rocky Mountain Arsenal National Wildlife Refuge, Commerce City | Federal herd | U.S. Fish and Wildlife Service | None noted | Has supplied buffalo to Tribal herds, including [Wolakota](https://en.wikipedia.org/wiki/Wolakota_Buffalo_Range) in 2021 |
+
+## What these show
+
+- **Public institutions can do this well.** Cities, counties, and a state university already manage herds on public land near the Front Range.
+- **A university adds something distinct.** At the Laramie Foothills herd, CSU's science is what made it possible to raise healthy buffalo with valuable genetics.
+- **Returning buffalo to Tribal Nations is already part of the model.** Both the Fort Collins and Denver herds send animals to Tribal Nations, working with the InterTribal Buffalo Council and Tribal partners.
+
+## A Tribally led example
+
+[Wolakota Buffalo Range](https://www.worldwildlife.org/news/press-releases/rosebud-sioux-tribe-to-create-north-americas-largest-native-owned-and-managed-bison-herd/), on the Rosebud Sioux Reservation in South Dakota, shows the other side of the picture. It is owned and managed by the Rosebud Economic Development Corporation, part of the Rosebud Sioux Tribe, on nearly 28,000 acres, with room for about 1,500 animals. Its buffalo came in part from federal herds and from partners, including Rocky Mountain Arsenal in Colorado.
+
+Wolakota is a reminder that the most important buffalo herds are on Tribal lands, under Tribal management. A Front Range partnership could support that work, for example by sending animals, students, or research capacity, rather than only building a herd near campus.
+
+## What CU would be different from CSU
+
+CSU is Colorado's land-grant university, with colleges of agriculture and veterinary medicine. That made its role in the Laramie Foothills herd natural. CU Boulder's strengths are different: environmental, climate, and earth sciences, ecology, geography, and Indigenous studies. The [Why CU](why-cu.qmd) page describes what those strengths could contribute, and why they complement rather than duplicate CSU's work.

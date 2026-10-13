@@ -1,0 +1,79 @@
+---
+title: "Fire history"
+subtitle: "Option 5 · Where fire has burned, and fire as a tool"
+---
+
+```{python}
+#| output: asis
+import geopandas as gpd
+import plotly.graph_objects as go
+from sitekit import show
+from sitekit.config import PROCESSED
+print(show.preview_banner())
+ok = show.available("fire")
+if ok:
+    f = gpd.read_file(PROCESSED / "fire_perimeters.geojson")
+    total = f["acres_in_area"].sum() if len(f) else 0
+    share = 100 * total / show.area_acres()
+    yrs = f["year"].dropna().astype(int) if "year" in f else []
+    span = f"{yrs.min()}–{yrs.max()}" if len(yrs) else "the record"
+    print(f"""::: {{.lead}}
+Public records map **{len(f):,} fires** in the region over {span}, together covering about {total:,.0f} acres ({share:.1f}% of the area, counting reburned ground more than once).
+:::
+""")
+else:
+    print(show.missing_note("fire"))
+```
+
+Fire and grazing shaped the Great Plains together. Buffalo are drawn to the fresh green grass that comes up after a burn, so managers on large buffalo ranges often use planned (prescribed) fire to move animals across the land without fences. Fire can also be a risk to fences, buildings, and hay. A fire history map supports both views.
+
+## Mapped fires
+
+```{python}
+if ok and len(f):
+    m = show.base_map()
+    f["acres_label"] = f["acres_in_area"].round(0)
+    if "name" not in f:
+        f["name"] = "Unnamed"
+    f[["year", "name", "acres_label", "geometry"]].to_file(PROCESSED / "_fire_display.geojson", driver="GeoJSON")
+    show.vector_layer(m, "_fire_display.geojson", "Fire perimeters", show.FIRE, weight=1, fill=True,
+                      tooltip=["name", "year", "acres_label"], aliases=["Fire", "Year", "Acres"])
+    display(show.finish(m))
+```
+
+::: {.map-caption}
+Data: National Interagency Fire Center, InterAgency Fire Perimeter History. Small fires and many planned burns are often not mapped, so this is a partial record. Hover over a fire for details.
+:::
+
+```{python}
+if ok and len(f) and "year" in f:
+    by = show.fire_year_totals(f)
+    fig = go.Figure(go.Bar(x=by.index, y=by.values, marker_color=show.FIRE,
+                           hovertemplate="%{x}: %{y:,.0f} acres burned<extra></extra>"))
+    fig.update_layout(yaxis_title="Acres burned in the region", xaxis=dict(tickformat="d"))
+    show.show(fig, 300)
+```
+
+## What it tells a range manager
+
+- **Where recently burned ground will draw the herd** next season.
+- **How often each area burns**, which affects grass, shrubs, and trees over time.
+- **Where planned burns could help**, for example to keep trees and shrubs from spreading into grassland.
+
+## What it would take
+
+::: {.what-it-takes}
+| | |
+|---|---|
+| Effort | Low for the public record. Moderate to add the team's own planned burns and their results. |
+| Cost | No data cost. Planned burning itself needs trained crews, equipment, and permits. |
+| Skills | Map reading. Burn planning is a specialized skill, often done with Tribal fire programs or partners. |
+| What the team would own | Records of their planned burns, and what the herd and grass did afterward. |
+:::
+
+::: {.their-call}
+### Questions only the Wolakota team can answer
+- Is planned fire part of how the team wants to manage the range?
+- Who else should be part of fire decisions, such as Tribal fire programs or neighbors?
+- Would a record of burns and herd response be worth keeping?
+:::

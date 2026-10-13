@@ -1,0 +1,13 @@
+<button class="print-button" onclick="window.print()">Print / Save PDF</button>
+<style>
+.print-figure { display: none; }
+.print-button { margin: 1rem 0; padding: .45rem .8rem; border: 1px solid #6b665c; border-radius: 4px; background: #f6f3ec; }
+.print-only { display: none; }
+@media print {
+  .interactive-figure, .interactive-calculator, .ojs-cell, .print-button, nav, #quarto-margin-sidebar, #quarto-sidebar { display: none !important; }
+  .print-figure, .print-only { display: block !important; width: 100%; }
+  .print-figure, table, .map-legend { break-inside: avoid; }
+  main { max-width: 100% !important; width: 100% !important; }
+  a { color: inherit; text-decoration: none; }
+}
+</style>

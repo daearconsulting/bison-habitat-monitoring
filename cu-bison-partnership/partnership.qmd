@@ -1,0 +1,52 @@
+---
+title: "Partnership models"
+subtitle: "Three ways CU could take part, from lightest to most involved"
+---
+
+::: {.lead}
+CU could start by supporting herds that already exist, and take on more only if the relationships and the science justify it. None of these models requires CU to own animals.
+:::
+
+## The three models
+
+| | A. Support existing herds | B. A partner-hosted herd near Boulder | C. Support for Tribal herds at home |
+|---|---|---|---|
+| **The idea** | CU brings research and students to herds that already exist in Colorado | A new herd on public open space, run with a land partner, Tribal Nations, and CU together | CU puts research, students, and convening power behind herds on Tribal lands |
+| **Where the buffalo live** | Existing Front Range herds | City, county, or federal open space near Boulder | On Tribal lands, under Tribal management |
+| **What CU contributes** | Faculty, students, monitoring, data | Research program, students, convening; possibly help with fundraising | Research and monitoring support, student exchange, data infrastructure the Nation controls |
+| **Who leads** | Existing herd managers | A partnership; Tribal Nations guide cultural practice and where surplus animals go | The Tribal Nation |
+| **Land CU needs** | None | None, if a land partner hosts | None |
+| **Commitment** | Light; can start within a year | Heavy; multi-year agreements and fundraising | Moderate; depends on each Nation's priorities |
+| **Example** | Research ties to the Fort Collins and Denver herds | The Laramie Foothills herd model, with Tribal Nations as full partners from the start | Herds like Wolakota in South Dakota |
+
+The models can be combined. For example, A and C could start at once, while B is explored slowly over several years.
+
+## How roles could divide in model B
+
+```{mermaid}
+flowchart TB
+  subgraph G["Guidance"]
+    T["Tribal Nations<br/>cultural direction, priorities,<br/>where surplus buffalo go"]
+    I["InterTribal Buffalo Council<br/>experience, matching<br/>herds with Nations"]
+  end
+  subgraph K["Knowledge and people"]
+    C["CU Boulder<br/>research, monitoring,<br/>students, convening"]
+    TC["Tribal colleges<br/>students, faculty,<br/>knowledge holders"]
+  end
+  subgraph D["Day-to-day care"]
+    L["Land partner<br/>land, fencing, herd staff"]
+  end
+  G <--> K
+  G --> D
+  K --> D
+```
+
+Guidance shapes everything below it. CU and Tribal colleges contribute knowledge and people; the land partner handles daily care.
+
+## Questions any model would need to answer
+
+- **Which Tribal Nations want to be part of this, and in what role?** That answer should come before any design.
+- **What happens to surplus animals?** In Colorado's existing herds, many go to Tribal Nations.
+- **Who owns the data and knowledge** the research produces, especially knowledge shared by Tribal partners?
+- **How is it paid for over the long run?** Herds last decades; grants last a few years.
+- **Who is the land partner**, if any, and what do they want from the arrangement?

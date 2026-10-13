@@ -1,0 +1,53 @@
+---
+title: "Data and governance"
+subtitle: "Where every map comes from, and what is not here"
+---
+
+```{python}
+#| output: asis
+from sitekit import show
+print(show.preview_banner())
+```
+
+::: {.lead}
+Every map and chart on this site is built from free, national, public data. No Tribal, herd, or ranch information was used, collected, or stored.
+:::
+
+## Sources
+
+```{python}
+#| output: asis
+names = {"area": "Example region boundary", "rap": "Vegetation cover and forage",
+         "drought": "Drought conditions", "water": "Streams, ponds, and reservoirs", "fire": "Fire perimeters"}
+status = {"ok": "Retrieved", "failed": "Not retrieved", "demo": "Preview data"}
+rows = ["| Data | Source | Last built (UTC) | Status | Notes |", "|---|---|---|---|---|"]
+for key, label in names.items():
+    d = show.MANIFEST.get("datasets", {}).get(key)
+    if not d:
+        continue
+    src = f"[{d['source']}]({d['url']})" if d.get("url", "").startswith("http") else d.get("source", "")
+    note = d.get("note", "").replace("|", "/")
+    rows.append(f"| {label} | {src} | {d.get('retrieved_utc','')} | {status.get(d['status'], d['status'])} | {note} |")
+print("\n".join(rows))
+```
+
+## About the example region
+
+The region shown is a public, landscape-scale area around Todd and Mellette counties, South Dakota, drawn from U.S. Census boundaries. It was chosen to show what the data looks like in this part of the Great Plains. It is not the Wolakota Buffalo Range and does not show any range, pasture, or herd.
+
+## How accurate the numbers are
+
+- **Forage and plant cover** come from the Rangeland Analysis Platform, which combines Landsat satellite images with thousands of field plots. Yearly estimates are good at showing patterns and trends. Single values for a single spot can be off, which is why ground checks matter.
+- **Drought** comes from the U.S. Drought Monitor, a weekly expert judgment at the county scale.
+- **Water** comes from the USGS national stream and pond map. It misses wells, tanks, pipelines, most springs, and whether a pond holds water in a dry year.
+- **Fire** comes from the National Interagency Fire Center. Small fires and many planned burns are not mapped.
+
+## Data sovereignty
+
+This site follows a simple rule: **public data can be shown publicly; anything from the Tribe or the range stays under Tribal control.** If the Wolakota team ever chose to add its own information, that information would be kept separate from this public site and shared only as the team decides. The approach follows the CARE Principles for Indigenous Data Governance and, above all, the Rosebud Sioux Tribe's own laws and protocols.
+
+## How the site stays current
+
+The site rebuilds itself on a schedule. Each rebuild downloads the newest public data, redraws every map and chart, and records the date in the table above. If a data service is down, that one item is marked "Not retrieved" and the rest of the site still updates.
+
+The code that builds this site is open and documented for technical staff, and can be pointed at a different area by changing one settings file.

@@ -1,0 +1,19 @@
+# Rendered site (GitHub Actions publishes it; no need to commit)
+_site/
+.quarto/
+*_files/
+
+# Raw downloads (large); processed outputs ARE committed so the site renders without re-downloading
+data/cache/
+
+# Files written while rendering
+data/processed/_*.geojson
+
+__pycache__/
+.ipynb_checkpoints/
+
+/.quarto/
+**/*.quarto_ipynb
+
+data/build-*/
+data/processed.previous/

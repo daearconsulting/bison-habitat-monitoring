@@ -1,0 +1,83 @@
+---
+title: "Water across the land"
+subtitle: "Option 4 · How far each place is from mapped water"
+---
+
+```{python}
+#| output: asis
+import numpy as np
+from sitekit import show
+print(show.preview_banner())
+ok = show.available("water")
+if ok:
+    st = show.raster_stats("water_distance_km.tif")
+    v = st["values"]
+    far2 = 100 * (v > 2).mean()
+    far3 = 100 * (v > 3).mean()
+    print(f"""::: {{.lead}}
+About **{far2:.0f}% of the region is more than 2 km (1.2 miles) from mapped water**, and {far3:.0f}% is more than 3 km away. Grazing animals tend to use land near water far more than land farther out.
+:::
+""")
+else:
+    print(show.missing_note("water"))
+```
+
+Buffalo need to drink every day, and they range farther from water than cattle typically do. Even so, land far from water tends to be grazed lightly while land near water gets heavy use. A map of distance to water shows where a herd is likely to spend its time and where a new water source would open up grass.
+
+## Distance to mapped water
+
+```{python}
+if ok:
+    m = show.base_map()
+    show.raster_layer(m, "water_distance_km.tif", "Distance to water (km)", "YlOrBr", 0, 5,
+                      ["#ffffe5", "#fee391", "#fe9929", "#cc4c02", "#662506"], "Distance to mapped water (km)",
+                      opacity=0.75)
+    show.vector_layer(m, "water_streams.geojson", "Year-round streams", show.WATER, weight=2)
+    show.vector_layer(m, "water_bodies.geojson", "Ponds, stock dams, reservoirs", show.WATER, weight=1, fill=True)
+    display(show.finish(m))
+```
+
+::: {.map-caption}
+Data: USGS National Hydrography Dataset (NHDPlus High Resolution). Only streams mapped as year-round and mapped ponds, stock dams, and reservoirs are counted. Seasonal creeks are left out because they often dry up by late summer.
+:::
+
+```{python}
+if ok:
+    import plotly.graph_objects as go
+    bins = [0, 1, 2, 3, 4, 5, np.inf]
+    labels = ["Under 1 km", "1–2 km", "2–3 km", "3–4 km", "4–5 km", "Over 5 km"]
+    counts, _ = np.histogram(v, bins=bins)
+    share = 100 * counts / counts.sum()
+    fig = go.Figure(go.Bar(x=labels, y=share, marker_color=["#fee391", "#fec44f", "#fe9929", "#ec7014", "#cc4c02", "#8c2d04"],
+                           hovertemplate="%{x}: %{y:.0f}% of the area<extra></extra>"))
+    fig.update_layout(yaxis_title="Share of the area (%)", xaxis_title="Distance to mapped water")
+    show.show(fig, 300)
+```
+
+## What public maps miss
+
+This is the most important part of this page. National maps do not show **wells, stock tanks, pipelines, or springs** in most places, and they cannot say which ponds hold water in a dry August. The people who work the land know those things. Adding them would change this map more than any satellite could.
+
+## What it tells a range manager
+
+- **Where grazing pressure is likely to concentrate**, near water, and where grass goes unused.
+- **Where a new tank or pipeline would open up the most grass**, once real water points are added.
+- **Which water sources matter most in drought**, when seasonal ones fail.
+
+## What it would take
+
+::: {.what-it-takes}
+| | |
+|---|---|
+| Effort | Low for this public map. Moderate to add real water points: one season of locating and recording tanks, wells, and reliable ponds. |
+| Cost | No data cost. A phone or GPS unit is enough to record water points. |
+| Skills | Basic map reading. Recording points takes a free phone app. |
+| What the team would own | The locations of their wells, tanks, and pipelines. That is infrastructure information the team may want to keep private. |
+:::
+
+::: {.their-call}
+### Questions only the Wolakota team can answer
+- Is a map of water points useful, or is that knowledge already held well by the people on the ground?
+- If water points were recorded, who should be able to see them?
+- Which water sources are trusted in a dry year?
+:::

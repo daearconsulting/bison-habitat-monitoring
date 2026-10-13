@@ -1,0 +1,54 @@
+# Site settings: the one file to edit to change the area or the screening rules.
+
+site_title: "Buffalo on the Front Range"
+site_subtitle: "Why CU Boulder, and what a partnership could look like"
+
+# Screening region (min_lon, min_lat, max_lon, max_lat): the northern Front Range,
+# from Daniels Park in the south to the Wyoming line, so every existing herd fits on one map.
+area:
+  label: "Northern Front Range"
+  bbox: [-105.60, 39.40, -104.50, 41.00]
+
+rap:
+  map_resolution_m: 90
+
+# Grassland screening rules (a coarse first look, not a site evaluation)
+grassland:
+  min_perennial_cover_pct: 40   # perennial grasses and forbs cover at least this share of the ground
+  max_tree_cover_pct: 10        # mostly open country
+  max_bare_ground_pct: 35       # leaves out heavily disturbed or cultivated ground
+  min_block_acres: 2000         # contiguous blocks at least this large are shown
+
+# Places shown on the map. Locations are approximate and for orientation only.
+places:
+  - name: "CU Boulder main campus"
+    kind: campus
+    lat: 40.0076
+    lon: -105.2659
+  - name: "Laramie Foothills Bison Conservation Herd (Soapstone Prairie / Red Mountain)"
+    kind: herd
+    lat: 40.96
+    lon: -105.10
+  - name: "Rocky Mountain Arsenal National Wildlife Refuge herd"
+    kind: herd
+    lat: 39.83
+    lon: -104.86
+  - name: "Denver Mountain Parks herd, Genesee Park"
+    kind: herd
+    lat: 39.70
+    lon: -105.29
+  - name: "Denver Mountain Parks herd, Daniels Park"
+    kind: herd
+    lat: 39.48
+    lon: -104.92
+
+landcover:
+  year: 2024
+  raster: "https://data.naturalcapitalalliance.stanford.edu/download/global/NLCD/LandCover/MRLC_Annual_NLCD_LndCov_2024_c1v1.tif"
+  source_url: "https://www.mrlc.gov/data/annual-nlcd-land-cover-2024-conus"
+  include_classes: [52, 71]
+
+validation:
+  required_datasets: [area, landcover, rap]
+  max_age_days: {area: 400, landcover: 400, rap: 400, drought: 21, water: 400, fire: 400}
+

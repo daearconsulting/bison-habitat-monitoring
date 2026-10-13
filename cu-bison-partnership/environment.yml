@@ -1,0 +1,23 @@
+name: range-sites
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - geopandas
+  - shapely
+  - pyproj
+  - pyogrio
+  - rasterio
+  - requests
+  - pyyaml
+  - matplotlib
+  - plotly
+  - folium
+  - branca
+  - jupyter
+  - ipykernel
+  - nbformat
+  - nbclient

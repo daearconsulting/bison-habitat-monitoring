@@ -1,0 +1,109 @@
+---
+title: "Watching the Range"
+subtitle: "What buffalo habitat monitoring could look like, shown with public data"
+toc: false
+---
+
+```{python}
+#| output: asis
+from sitekit import show
+print(show.preview_banner())
+```
+
+::: {.lead}
+This site shows six ways a buffalo range can be watched over time using information that is already public and free. It is a set of examples to look at, not advice and not a plan.
+:::
+
+## Why this exists
+
+Range managers ask the same questions every year: how much grass grew, whether it will be enough for the herd, where water is short, and what drought, fire, and invasive grasses are doing to the land. Satellites and national programs now answer part of those questions every year, for every acre, at no cost.
+
+Each page below takes one of those questions and shows what the public answer looks like for the Rosebud region of South Dakota. The point is to show what is possible, so the people who care for a herd can decide whether any of it is worth using.
+
+```{python}
+#| output: asis
+import pandas as pd
+if show.available("area") and show.available("rap"):
+    acres = show.area_acres()
+    s = show.rap_series()
+    yr = int(s["year"].max())
+    print(f"""
+    ::: {{.facts}}
+    ::: {{.fact}}
+    ::: {{.num}}
+    {(f'{acres/1e6:.1f} million' if acres >= 1e6 else f'{acres/1000:,.0f}k')}
+    :::
+    ::: {{.lbl}}
+    acres in the example region
+    :::
+    :::
+    ::: {{.fact}}
+    ::: {{.num}}
+    {int(s['year'].min())}–{yr}
+    :::
+    ::: {{.lbl}}
+    years of yearly grass records
+    :::
+    :::
+    ::: {{.fact}}
+    ::: {{.num}}
+    6
+    :::
+    ::: {{.lbl}}
+    monitoring options shown
+    :::
+    :::
+    ::: {{.fact}}
+    ::: {{.num}}
+    $0
+    :::
+    ::: {{.lbl}}
+    cost of the public data used
+    :::
+    :::
+    :::
+    """)
+else:
+    print(show.missing_note("regional vegetation"))
+```
+
+## What this is, and what it is not
+
+| This site **is** | This site **is not** |
+|---|---|
+| Examples of what public data can show | An assessment of the Wolakota Buffalo Range |
+| A regional view of the Rosebud area | A map of the range or its pastures |
+| A menu of options, each with its effort and trade-offs | A recommendation to adopt any of them |
+| Built only from public, national data | Built from any Tribal, herd, or ranch records |
+
+Wolakota already has partners and its own ways of watching the land. Anything here is meant to sit alongside that knowledge, not replace it.
+
+## The six options
+
+::: {.cards}
+[**How much grass grew** <br>Yearly forage on every acre since 1986, and how this year compares with normal.](forage.qmd){.card-link}
+
+[**Forage and herd size** <br>A simple calculator showing how good and bad grass years change how many animals the land can carry.](herd-size.qmd){.card-link}
+
+[**Drought** <br>Weekly drought conditions since 2000, the early warning for a short grass year.](drought.qmd){.card-link}
+
+[**Water across the land** <br>How far each part of the landscape is from mapped streams and ponds.](water.qmd){.card-link}
+
+[**Fire history** <br>Where fires have burned, and how fire can be a tool as well as a risk.](fire.qmd){.card-link}
+
+[**Invasive annual grasses** <br>Whether cheatgrass and other annual grasses are spreading.](invasive.qmd){.card-link}
+:::
+
+## How monitoring fits together
+
+Monitoring is useful only if it feeds decisions and then gets checked against what happened on the ground.
+
+```{mermaid}
+flowchart LR
+  A["Look<br/>satellite and<br/>national data"] --> B["Check<br/>what people see<br/>on the land"]
+  B --> C["Decide<br/>herd moves, water,<br/>fire, numbers"]
+  C --> D["Record<br/>what was done<br/>and why"]
+  D -. "and again next season" .-> A
+```
+
+The public data on this site covers the first step. The other three belong to the people who know the land, and the page [If Wolakota wanted to try this](trying-it.qmd) lays out the choices involved.

@@ -1,0 +1,36 @@
+---
+title: "Sources"
+subtitle: "Where the facts and data on this site come from"
+---
+
+```{python}
+#| output: asis
+from sitekit import show
+print(show.preview_banner())
+```
+
+## Facts about existing herds
+
+- Colorado State University, [Record relocation: CSU, partners provide 39 Laramie Foothills bison to 3 Native Nations](https://newsmediarelations.colostate.edu/2022/04/11/record-relocation-csu-partners-provide-39-laramie-foothills-bison-to-3-native-nations/) (April 2022): herd history since 2015, partners, CSU's research role, and transfers to Tribal Nations.
+- Denverite, [Denver donates 30 bison to Tribal Nations](https://denverite.com/2023/03/15/denver-donates-30-bison-to-tribal-nations/) (March 2023): Denver's herds and its Tribal donation program since 2021.
+- World Wildlife Fund, [Rosebud Sioux Tribe to create North America's largest Native-owned and managed bison herd](https://www.worldwildlife.org/news/press-releases/rosebud-sioux-tribe-to-create-north-americas-largest-native-owned-and-managed-bison-herd/) (May 2020): Wolakota's size, ownership, and capacity.
+- Wikipedia, [Wolakota Buffalo Range](https://en.wikipedia.org/wiki/Wolakota_Buffalo_Range): sources of Wolakota's buffalo, including Rocky Mountain Arsenal.
+- University of Colorado Boulder, [Center for Native American and Indigenous Studies](https://www.colorado.edu/cnais/).
+
+## Map data
+
+```{python}
+#| output: asis
+status = {"ok": "Retrieved", "failed": "Not retrieved", "demo": "Preview data"}
+d = show.MANIFEST.get("datasets", {}).get("rap")
+if d:
+    src = f"[{d['source']}]({d['url']})" if d.get("url", "").startswith("http") else d["source"]
+    print(f"| Data | Source | Last built (UTC) | Status | Notes |\n|---|---|---|---|---|\n"
+          f"| Grassland cover | {src} | {d['retrieved_utc']} | {status.get(d['status'], d['status'])} | {d.get('note','')} |")
+```
+
+Herd locations on the maps are approximate and are placed only for orientation.
+
+## About this site
+
+This is a discussion resource prepared from public information. It is not a proposal from CU Boulder, any Tribal Nation, or any land manager, and it speaks for none of them.

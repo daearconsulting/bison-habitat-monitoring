@@ -1,0 +1,95 @@
+---
+title: "Where grassland is"
+subtitle: "Large, open grasslands in the northern Front Range, for discussion"
+---
+
+```{python}
+#| output: asis
+import pandas as pd
+from sitekit import show
+from sitekit.config import load_site
+site = load_site()
+rules = site["grassland"]
+campus = next(p for p in site["places"] if p["kind"] == "campus")
+print(show.preview_banner())
+ok = show.available("rap")
+if ok:
+    b = show.blocks()
+    yr = show.latest_year()
+    big = b[b.acres >= 10000]
+    reps = b.geometry.representative_point()
+    b["km_from_campus"] = [show.km_between(campus["lat"], campus["lon"], p.y, p.x) for p in reps]
+    near = b[b.km_from_campus <= 60]
+    print(f"""::: {{.lead}}
+Satellite data for {yr} shows **{len(b)} blocks of open grassland of at least {rules['min_block_acres']:,} acres** in the region, {len(near)} of them centered within 60 km (about 40 miles) of campus. These are places worth a conversation, not proposed sites.
+:::
+""")
+else:
+    print(show.missing_note("grassland"))
+```
+
+A buffalo herd needs room: the Laramie Foothills herd uses roughly 2,500 acres, and herds on the Great Plains often range over tens of thousands. This map is a first look at where large stretches of open, grassland/shrubland vegetation still exist near Boulder.
+
+## Open grassland blocks
+
+```{python}
+if ok:
+    m = show.base_map()
+    show.raster_layer(m, "rap_perennial_cover.tif", "Grass and forb cover (%)", "YlGn", 0, 80,
+                      ["#ffffcc", "#c2e699", "#78c679", "#238443"], f"Perennial grass and forb cover, {yr} (%)",
+                      opacity=0.7, show=False)
+    b_disp = b.copy()
+    b_disp["acres_r"] = b_disp.acres.round(-1)
+    b_disp["km_r"] = b_disp.km_from_campus.round(0)
+    b_disp[["block", "acres_r", "km_r", "geometry"]].to_file("data/processed/_blocks_display.geojson", driver="GeoJSON")
+    show.vector_layer(m, "_blocks_display.geojson", f"Open grassland blocks ({rules['min_block_acres']:,}+ acres)",
+                      show.GRASS, weight=1.5, fill=True, tooltip=["block", "acres_r", "km_r"],
+                      aliases=["Block", "Acres", "Km from campus"])
+    show.places_layer(m, site["places"])
+    display(show.finish(m, height=560))
+```
+
+::: {.map-caption}
+Data: Rangeland Analysis Platform vegetation cover, from Landsat satellite images and field plots. Green outlines are contiguous areas where grasses and forbs that return every year cover at least `{python} rules["min_perennial_cover_pct"]`% of the ground, trees cover no more than `{python} rules["max_tree_cover_pct"]`%, and bare ground is no more than `{python} rules["max_bare_ground_pct"]`%. Hover over a block for its size and distance from campus.
+:::
+
+## The largest blocks near campus
+
+```{python}
+#| output: asis
+if ok:
+    t = near.sort_values("acres", ascending=False).head(10)
+    rows = ["| Block | Size (acres) | Distance from campus (km) |", "|---|---|---|"]
+    rows += [f"| {int(r.block)} | {r.acres:,.0f} | {r.km_from_campus:,.0f} |" for r in t.itertuples()]
+    print("\n".join(rows))
+    print("\nBlock numbers match the hover labels on the map. Distances are straight-line from the main campus to a point inside each block.")
+```
+
+## What this map does not show
+
+- **Who owns or manages the land.** Many blocks are private ranches; others are city, county, state, or federal open space. Ownership is the next layer to add, and the conversations that follow matter far more than any map.
+- **Whether anyone wants a herd there.** Neighbors, existing grazing leases, recreation, and wildlife all shape what is possible.
+- **Fencing, water, and handling facilities**, which drive much of a herd's cost.
+- **Places important to Tribal Nations.** That knowledge belongs to them, and they decide whether and how to share it.
+
+The point of the map is narrower: to show that large, open grasslands still exist within reach of campus, which makes the question worth asking.
+
+
+## Which land is included
+
+The vegetation analysis uses a fixed 2024 Annual NLCD grassland/herbaceous and shrub/scrub mask. Mapped crops, hay/pasture, developed land, forests, wetlands and water are excluded. The mask does not identify native species or irrigation. Historical summaries use this same footprint each year, so they describe vegetation change on the selected footprint rather than changes in land use.
+
+```{python}
+#| output: asis
+fraction = show.MANIFEST.get("eligible_grid_fraction_pct")
+if fraction is not None:
+    print(f"Eligible cells cover {fraction:.1f}% of the analysis bounding grid (before clipping to the regional outline). RAP builds require at least 90% valid data on eligible cells in each year.")
+```
+
+
+```{python}
+#| output: asis
+eligible_acres = show.MANIFEST.get("eligible_acres")
+if eligible_acres is not None:
+    print(f"The regional analysis footprint contains approximately {eligible_acres:,.0f} eligible acres, measured on the land-cover analysis grid.")
+```

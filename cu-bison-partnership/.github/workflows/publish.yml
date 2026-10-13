@@ -1,0 +1,85 @@
+# Builds the data, renders the Quarto site, and publishes it to GitHub Pages.
+#
+# - Monthly and on demand: download fresh
+#   public data, commit the small processed files back to the repo, then publish.
+# - On every push to main: re-render and publish using the data already in the repo (fast).
+#
+# One-time setup: repo Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+
+name: Build and publish site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 14 3 * *"
+  workflow_dispatch:
+    inputs:
+      rebuild_data:
+        description: "Download fresh public data before publishing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt -c constraints.txt
+
+      - name: Regression checks
+        run: python -m unittest discover -s tests -v
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.8.27"
+
+      - name: Download and process public data
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_data)
+        run: python scripts/build_data.py
+
+      - name: Refuse to publish preview data
+        run: python scripts/check_data.py
+
+      - name: Render the site
+        run: quarto render
+
+      - name: Save the refreshed data to the repository
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_data)
+        run: |
+          git config user.name "site-bot"
+          git config user.email "site-bot@users.noreply.github.com"
+          git add data/processed
+          git diff --cached --quiet || git commit -m "Refresh public data [skip ci]"
+          git push
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

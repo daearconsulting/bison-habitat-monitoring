@@ -1,0 +1,84 @@
+---
+title: "Invasive annual grasses"
+subtitle: "Option 6 · Whether cheatgrass and similar grasses are spreading"
+---
+
+```{python}
+#| output: asis
+import plotly.graph_objects as go
+from sitekit import show
+print(show.preview_banner())
+ok = show.available("rap")
+if ok:
+    s = show.rap_series()
+    first = s.head(10)["cover_annual_grass_forb_pct"].mean()
+    recent = s.tail(5)["cover_annual_grass_forb_pct"].mean()
+    y0, y1 = int(s.year.iloc[0]), int(s.year.iloc[9]) if len(s) >= 10 else int(s.year.iloc[-1])
+    r0, r1 = int(s.year.iloc[max(0, len(s)-5)]), int(s.year.iloc[-1])
+    trend = "risen" if recent > first else "fallen"
+    print(f"""::: {{.lead}}
+Annual grasses and forbs covered about **{recent:.1f}% of the ground** across the region in {r0}–{r1}, compared with {first:.1f}% in {y0}–{y1}. Their share has {trend} over that time.
+:::
+""")
+else:
+    print(show.missing_note("vegetation"))
+```
+
+Cheatgrass, Japanese brome, and similar grasses come up early, dry out early, and leave little feed for the rest of the year. They also carry fire. Native perennial grasses, which come back from their roots every year, are the backbone of a buffalo range. Watching the balance between the two is one of the clearest long-term health checks for grassland.
+
+The satellite data groups all annual grasses and broad-leaved annual plants together, including some native ones, so this is a warning sign to check, not a weed map.
+
+## Annual and perennial plants over time
+
+```{python}
+if ok:
+    fig = go.Figure()
+    fig.add_scatter(x=s.year, y=s.cover_perennial_grass_forb_pct, name="Perennial grasses and forbs",
+                    line=dict(color=show.GRASS, width=3), hovertemplate="%{x}: %{y:.1f}%<extra>Perennial</extra>")
+    fig.add_scatter(x=s.year, y=s.cover_annual_grass_forb_pct, name="Annual grasses and forbs",
+                    line=dict(color=show.EARTH, width=3), hovertemplate="%{x}: %{y:.1f}%<extra>Annual</extra>")
+    fig.update_layout(yaxis_title="Share of the ground covered (%)", yaxis_rangemode="tozero")
+    show.show(fig, 360)
+```
+
+## Where annual grasses have changed
+
+Brown areas have more annual grass and forb cover now (the last 5 years) than in the first 10 years of the record. Green areas have less.
+
+```{python}
+if ok:
+    m = show.base_map()
+    show.raster_layer(m, "rap_annual_change.tif", "Change in annual cover (percentage points)", "BrBG_r", -10, 10,
+                      ["#01665e", "#c7eae5", "#f6e8c3", "#8c510a"], "Change in annual grass and forb cover (points)")
+    show.raster_layer(m, "rap_annual_cover.tif", f"Annual cover in {s.year.max()} (%)", "YlOrBr", 0, 20,
+                      ["#ffffe5", "#fec44f", "#cc4c02"], f"Annual grass and forb cover, {s.year.max()} (%)", show=False)
+    display(show.finish(m))
+```
+
+::: {.map-caption}
+Data: Rangeland Analysis Platform, yearly cover estimates from Landsat satellite images and field plots.
+:::
+
+## What it tells a range manager
+
+- **Whether invasive annuals are gaining ground**, and where.
+- **Where to look first** on the ground, before a small problem becomes a large one.
+- **Whether grazing and fire are helping**, since well-timed grazing and burning can push annual grasses back.
+
+## What it would take
+
+::: {.what-it-takes}
+| | |
+|---|---|
+| Effort | Low for the yearly maps. Moderate to visit flagged areas and confirm what is growing there. |
+| Cost | No data cost. Field checks take staff time once or twice a year. |
+| Skills | Map reading. Telling annual grasses apart in the field takes some plant knowledge. |
+| What the team would own | Field confirmations and any treatment records. |
+:::
+
+::: {.their-call}
+### Questions only the Wolakota team can answer
+- Are invasive grasses a concern the team already sees on the ground?
+- Would yearly change maps help decide where to graze or burn?
+- Are there plants of cultural importance that a map like this should never lump in with weeds?
+:::

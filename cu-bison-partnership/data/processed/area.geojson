@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "area",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "label": "Northern Front Range", "acres": 4111489.687306344 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -104.5, 39.4 ], [ -104.5, 41.0 ], [ -105.6, 41.0 ], [ -105.6, 39.4 ], [ -104.5, 39.4 ] ] ] } }
+]
+}

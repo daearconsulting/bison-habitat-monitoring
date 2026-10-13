@@ -1,0 +1,51 @@
+project:
+  type: website
+  output-dir: _site
+  execute-dir: project
+  post-render:
+    - python scripts/post_render.py
+
+website:
+  title: "Buffalo on the Front Range"
+  description: "Why CU Boulder, and what a buffalo partnership with Tribal Nations could look like"
+  page-navigation: true
+  navbar:
+    background: "#2b2a26"
+    foreground: "#f6f3ec"
+    left:
+      - href: index.qmd
+        text: Overview
+      - href: precedents.qmd
+        text: "Colorado examples"
+      - href: why-cu.qmd
+        text: "Why CU"
+      - href: partnership.qmd
+        text: "Models"
+      - href: landscape.qmd
+        text: "Grassland map"
+      - href: next-steps.qmd
+        text: "First step"
+      - href: sources.qmd
+        text: "Sources"
+  page-footer:
+    left: "A discussion resource built from public information. Not a CU Boulder or Tribal proposal."
+    right: "Prepared by Lilly Jones, PhD"
+
+format:
+  html:
+    include-before-body: print.html
+    theme: [cosmo, styles.scss]
+    toc: true
+    toc-title: "On this page"
+    toc-depth: 2
+    page-layout: article
+    smooth-scroll: true
+    link-external-newwindow: true
+    mermaid:
+      theme: neutral
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: false

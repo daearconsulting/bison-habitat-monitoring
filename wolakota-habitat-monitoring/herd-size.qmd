@@ -1,0 +1,136 @@
+---
+title: "Forage and herd size"
+subtitle: "Option 2 · How good and poor grass years change what the land can carry"
+---
+
+```{python}
+#| output: asis
+from sitekit import show
+from sitekit.config import load_site
+print(show.preview_banner())
+ok = show.available("rap")
+cfg = load_site()["forage_example"]
+if ok:
+    s = show.rap_series()[["year", "forage_total_lbs_ac"]]
+    ojs_define(series=s, cfg=cfg)
+else:
+    print(show.missing_note("forage"))
+    ojs_define(series={"year": [], "forage_total_lbs_ac": []}, cfg=cfg)
+```
+
+::: {.lead}
+The same acres can feed very different numbers of animals from one year to the next, because the amount of grass that grows swings with rain. The calculator below shows how big that swing is, using this region's own yearly forage record.
+:::
+
+This is arithmetic for discussion, not a stocking recommendation. Real herd planning also weighs pasture rotation, water, winter feed, wildlife, cultural priorities, and the knowledge of the people who work the land.
+
+::: {.interactive-calculator}
+
+## Try it
+
+Move the sliders to see how many adult buffalo an example piece of land could feed **year-round**, in each year since 1986.
+
+```{ojs}
+//| echo: false
+data = transpose(series)
+viewof acres = Inputs.range([500, 30000], {value: cfg.example_acres, step: 500, label: "Acres of grazing land"})
+viewof use = Inputs.range([10, 50], {value: cfg.harvest_efficiency_pct, step: 5, label: "Share of forage grazed (%)"})
+viewof au = Inputs.range([0.8, 1.5], {value: cfg.animal_units_per_adult_bison, step: 0.05, label: "Animal units per adult buffalo"})
+```
+
+```{ojs}
+//| echo: false
+// One "animal unit month" (AUM) = forage a 1,000 lb animal eats in a month.
+lbsPerAUM = cfg.lbs_per_animal_unit_month
+headFor = (lbsPerAcre) => acres * lbsPerAcre * (use / 100) / (lbsPerAUM * au * 12)
+rows = data.map(d => ({year: d.year, head: headFor(d.forage_total_lbs_ac)}))
+heads = rows.map(d => d.head).sort((a, b) => a - b)
+median = d3.median(heads) ?? 0
+low = d3.min(heads) ?? 0
+high = d3.max(heads) ?? 0
+fmt = d3.format(",.0f")
+```
+
+```{ojs}
+//| echo: false
+heads.length ? html`<div class="facts">
+  <div class="fact"><div class="num">${fmt(median)}</div><div class="lbl">buffalo in a typical (median) year</div></div>
+  <div class="fact"><div class="num">${fmt(low)}</div><div class="lbl">buffalo in the poorest year on record</div></div>
+  <div class="fact"><div class="num">${fmt(high)}</div><div class="lbl">buffalo in the best year on record</div></div>
+  <div class="fact"><div class="num">${fmt(100 * (median - low) / median)}%</div><div class="lbl">fewer animals in the poorest year than a typical one</div></div>
+</div>` : html`<p>Forage data unavailable; calculator results are hidden.</p>`
+```
+
+```{ojs}
+//| echo: false
+rows.length ? Plot.plot({
+  height: 340,
+  marginLeft: 55,
+  style: {fontSize: "14px", fontFamily: "Source Sans 3, Helvetica, Arial, sans-serif", background: "transparent"},
+  x: {label: null, tickFormat: "d", ticks: rows.map(d => d.year).filter(y => y % 5 === 0)},
+  y: {label: "Adult buffalo fed year-round", grid: true},
+  marks: [
+    Plot.barY(rows, {x: "year", y: "head", fill: d => d.head < 0.8 * median ? "#9a6b3c" : "#4f7a3a",
+                     tip: true, title: d => `${d.year}: ${fmt(d.head)} buffalo`}),
+    Plot.ruleY([median], {stroke: "#6b665c", strokeDasharray: "4 3"}),
+    Plot.text([median], {x: rows[rows.length - 1].year, y: d => d, text: d => `typical year: ${fmt(d)}`, dy: -10,
+                         textAnchor: "end", fill: "#2b2a26", stroke: "#fbf9f4", strokeWidth: 5, paintOrder: "stroke"})
+  ]
+}) : html`<p>No forage observations available.</p>`
+```
+
+:::
+
+## How the arithmetic works
+
+For each year: **acres × forage grown per acre × share grazed ÷ (forage one animal eats in a year)**.
+
+| Setting | Starting value | Why it matters |
+|---|---|---|
+| Share of forage grazed | `{python} cfg["harvest_efficiency_pct"]`% | Most grass is left for soil, wildlife, trampling losses, and a drought reserve. 25% is a common planning starting point. |
+| Forage per animal per month | `{python} f'{cfg["lbs_per_animal_unit_month"]:,}'` lbs | A U.S. Department of Agriculture (NRCS) planning value for a 1,000-pound animal. |
+| Animal units per adult buffalo | `{python} cfg["animal_units_per_adult_bison"]` | Bulls eat more than cows or yearlings. Managers adjust this for their own herd. |
+
+Forage per acre comes from the yearly average over the fixed grassland/shrubland footprint on the [How much grass grew](forage.qmd) page. Real pastures are better or worse than that average.
+
+## What it tells a range manager
+
+- **How much room to plan for poor years.** A herd sized for a typical year needs a plan (more land, hay, or fewer animals) for years like the poorest ones.
+- **What a growth target means in acres.** It translates a herd-size goal into how much grazing land it takes.
+
+## What it would take
+
+::: {.what-it-takes}
+| | |
+|---|---|
+| Effort | Low, once yearly forage numbers exist. This calculator runs in any web browser. |
+| Cost | None beyond keeping the yearly forage data current. |
+| Skills | None to use it. Setting good values needs the range team's own experience. |
+| What the team would own | Their herd numbers, pasture acres, and the values they choose. None of that is on this site. |
+:::
+
+::: {.their-call}
+### Questions only the Wolakota team can answer
+- What share of forage do they aim to leave on the land, and does it change by season?
+- Would a calculator like this be useful for planning, or for explaining plans to others?
+- Should herd numbers ever be entered into a tool like this, and who would see the results?
+:::
+
+
+::: {.print-only}
+## Calculator at the starting assumptions
+
+```{python}
+#| output: asis
+if ok:
+    divisor = cfg["lbs_per_animal_unit_month"] * cfg["animal_units_per_adult_bison"] * 12
+    heads = s.forage_total_lbs_ac * cfg["example_acres"] * cfg["harvest_efficiency_pct"] / 100 / divisor
+    print(f"Example: {cfg['example_acres']:,} acres; {cfg['harvest_efficiency_pct']}% grazed; {cfg['animal_units_per_adult_bison']} animal units per buffalo. Discussion arithmetic, not a stocking recommendation.")
+    print("\n| Year type | Adult buffalo fed year-round |\n|---|---:|")
+    for label, value in [("Poorest", heads.min()), ("Median", heads.median()), ("Best", heads.max())]:
+        print(f"| {label} | {value:,.0f} |")
+else:
+    print("Forage data unavailable.")
+```
+:::
+

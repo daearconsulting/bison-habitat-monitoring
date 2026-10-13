@@ -1,0 +1,88 @@
+---
+title: "Drought"
+subtitle: "Option 3 · The early warning for a short grass year"
+---
+
+```{python}
+#| output: asis
+import pandas as pd
+import plotly.graph_objects as go
+from sitekit import show
+from sitekit.config import load_site
+print(show.preview_banner())
+ok = show.available("drought")
+counties = load_site()["drought_area_label"]
+if ok:
+    d = show.drought_weekly()
+    d["in_drought"] = d[["d1", "d2", "d3", "d4"]].sum(axis=1)
+    last = d.iloc[-1]
+    prior = d[d.date <= last.date - pd.Timedelta(days=365)]
+    yr_ago = prior.iloc[-1] if len(prior) else last
+    share_years = (d.groupby(d.date.dt.year)["in_drought"].mean() >= 50).sum()
+    print(f"""::: {{.lead}}
+On {last.date:%B} {last.date.day}, {last.date.year}, **an average of {last.in_drought:.0f}% across {counties}** was in moderate or worse drought, compared with {yr_ago.in_drought:.0f}% a year earlier.
+:::
+""")
+else:
+    print(show.missing_note("drought"))
+```
+
+The U.S. Drought Monitor is a weekly national map built by drought scientists from rain, soil moisture, streamflow, and local reports. Because grass responds to rain with a lag, drought conditions in spring are one of the best early signs of a short forage year.
+
+## Every week since 2000
+
+```{python}
+if ok:
+    fig = go.Figure()
+    for k in ["d4", "d3", "d2", "d1", "d0"]:
+        fig.add_scatter(x=d.date, y=d[k], stackgroup="one", mode="none", name=show.DROUGHT_LABEL[k],
+                        fillcolor=show.DROUGHT[k], hovertemplate="%{x|%b %d, %Y}: %{y:.0f}%<extra>" + show.DROUGHT_LABEL[k] + "</extra>")
+    fig.update_layout(yaxis=dict(title="Mean county area share (%)", range=[0, 100]),
+                      legend=dict(traceorder="reversed"))
+    show.show(fig, 400)
+```
+
+```{python}
+#| output: asis
+if ok:
+    print(f"""Counties receive equal weight; this is not an area-weighted regional percentage. Colors stack up to the mean county share across {counties} in each drought category that week. In {share_years} of the {d.date.dt.year.nunique()} years shown, the mean county area share exceeded 50% in drought on average.""")
+```
+
+## The last twelve months
+
+```{python}
+if ok:
+    recent = d[d.date >= last.date - pd.Timedelta(days=365)]
+    fig = go.Figure()
+    for k in ["d4", "d3", "d2", "d1", "d0"]:
+        fig.add_bar(x=recent.date, y=recent[k], name=show.DROUGHT_LABEL[k], marker_color=show.DROUGHT[k],
+                    hovertemplate="%{x|%b %d}: %{y:.0f}%<extra>" + show.DROUGHT_LABEL[k] + "</extra>")
+    fig.update_layout(barmode="stack", bargap=0.05, yaxis=dict(title="Mean county area share (%)", range=[0, 100]),
+                      legend=dict(traceorder="reversed"))
+    show.show(fig, 320)
+```
+
+## What it tells a range manager
+
+- **Whether to expect a short grass year** before the grass shows it.
+- **When to start drought plans:** lining up hay, moving animals, or reducing numbers early, while prices and options are better.
+- **A record for drought relief programs**, which often use Drought Monitor categories to decide who qualifies.
+
+## What it would take
+
+::: {.what-it-takes}
+| | |
+|---|---|
+| Effort | Very low. The data updates every Thursday; this page can refresh itself on a schedule. |
+| Cost | None. |
+| Skills | None to read it. |
+| Checking on the ground | Local observers can submit condition reports to the Drought Monitor, which helps make the national map more accurate for the area. |
+| What the team would own | Their own rain gauge records and condition reports, if they choose to keep or share them. |
+:::
+
+::: {.their-call}
+### Questions only the Wolakota team can answer
+- Does the team have a drought plan with trigger points, such as "if severe drought by June, do this"?
+- Would a short weekly or monthly drought summary be useful to leadership?
+- Would the team want to report local conditions to the Drought Monitor?
+:::

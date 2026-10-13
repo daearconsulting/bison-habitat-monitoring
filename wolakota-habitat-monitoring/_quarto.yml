@@ -1,0 +1,59 @@
+project:
+  type: website
+  output-dir: _site
+  execute-dir: project
+  post-render:
+    - python scripts/post_render.py
+
+website:
+  title: "Watching the Range"
+  description: "What buffalo habitat monitoring could look like, shown with public data"
+  page-navigation: true
+  reader-mode: false
+  navbar:
+    background: "#2b2a26"
+    foreground: "#f6f3ec"
+    left:
+      - href: index.qmd
+        text: Overview
+      - text: Monitoring options
+        menu:
+          - href: forage.qmd
+            text: "How much grass grew"
+          - href: herd-size.qmd
+            text: "Forage and herd size"
+          - href: drought.qmd
+            text: "Drought"
+          - href: water.qmd
+            text: "Water across the land"
+          - href: fire.qmd
+            text: "Fire history"
+          - href: invasive.qmd
+            text: "Invasive annual grasses"
+      - href: trying-it.qmd
+        text: "If Wolakota wanted to try this"
+      - href: data.qmd
+        text: "Data and governance"
+  page-footer:
+    left: "An illustration built from public data. Not an assessment of the Wolakota Buffalo Range."
+    right: "Prepared by Lilly Jones, PhD · Daear Consulting, LLC"
+
+format:
+  html:
+    include-before-body: print.html
+    theme: [cosmo, styles.scss]
+    toc: true
+    toc-title: "On this page"
+    toc-depth: 2
+    page-layout: article
+    smooth-scroll: true
+    link-external-newwindow: true
+    embed-resources: false
+    mermaid:
+      theme: neutral
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: false

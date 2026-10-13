@@ -1,0 +1,115 @@
+---
+title: "How much grass grew"
+subtitle: "Option 1 · Yearly forage on every acre"
+---
+
+```{python}
+#| output: asis
+import numpy as np
+import plotly.graph_objects as go
+from sitekit import show
+print(show.preview_banner())
+ok = show.available("rap")
+if ok:
+    s = show.rap_series()
+    yr = int(s["year"].max())
+    normal_years = s[(s.year >= 1991) & (s.year <= 2020)]
+    normal = (normal_years if len(normal_years) else s)["forage_total_lbs_ac"].mean()
+    latest = float(s.loc[s.year == yr, "forage_total_lbs_ac"].iloc[0])
+    pct = 100 * (latest - normal) / normal
+    word = "above" if pct >= 0 else "below"
+    lo, hi = s.loc[s.forage_total_lbs_ac.idxmin()], s.loc[s.forage_total_lbs_ac.idxmax()]
+    print(f"""::: {{.lead}}
+In {yr}, the region grew about **{latest:,.0f} pounds of grass and forbs per acre**, {abs(pct):.0f}% {word} its 1991–2020 normal of {normal:,.0f} pounds.
+:::
+""")
+else:
+    print(show.missing_note("forage"))
+```
+
+Forage is the amount of grass and broad-leaved plants (forbs) that grows each year. It is the food supply for the herd, so it is usually the first thing a range manager wants to know.
+
+## Every year since 1986
+
+```{python}
+if ok:
+    colors = [show.EARTH if v < 0.8 * normal else show.GRASS for v in s.forage_total_lbs_ac]
+    fig = go.Figure()
+    fig.add_bar(x=s.year, y=s.forage_total_lbs_ac, marker_color=colors, name="Forage grown",
+                hovertemplate="%{x}: %{y:,.0f} lbs per acre<extra></extra>")
+    fig.add_hline(y=normal, line_dash="dot", line_color=show.MUTED,
+                  annotation_text=f"1991–2020 normal ({normal:,.0f})", annotation_position="top left",
+                  annotation_font_color=show.MUTED)
+    fig.update_layout(yaxis_title="Pounds per acre", showlegend=False, bargap=0.15)
+    show.show(fig, 380)
+```
+
+```{python}
+#| output: asis
+if ok:
+    low_count = int((s.forage_total_lbs_ac < 0.8 * normal).sum())
+    print(f"""Brown bars are years at least 20% below normal: {low_count} of the last {len(s)} years. The best year on record was {int(hi.year)} ({hi.forage_total_lbs_ac:,.0f} lbs/acre) and the poorest was {int(lo.year)} ({lo.forage_total_lbs_ac:,.0f} lbs/acre). A herd sized for an average year will be short of food in years like those.""")
+```
+
+## Where it grew this year
+
+The map shows forage on every patch of ground about 90 meters (300 feet) across. Use the layer button in the corner to switch between **how much grew** and **how this year compares with normal**, or to turn on a satellite photo.
+
+```{python}
+if ok:
+    m = show.base_map()
+    show.raster_layer(m, "rap_forage.tif", f"Forage grown in {yr} (lbs/acre)", "YlGn", 0, 2500,
+                      ["#f7fcb9", "#addd8e", "#41ab5d", "#005a32"], f"Forage grown in {yr} (lbs/acre)")
+    show.raster_layer(m, "rap_forage_anomaly.tif", "Compared with normal (%)", "BrBG", -50, 50,
+                      ["#8c510a", "#f6e8c3", "#c7eae5", "#01665e"], "Compared with normal (%)", show=False)
+    display(show.finish(m))
+```
+
+::: {.map-caption}
+Data: Rangeland Analysis Platform, produced yearly from Landsat satellite images and field plots. Values are estimates for planning, not measurements.
+:::
+
+## What it tells a range manager
+
+- **Whether this is a good, normal, or short grass year**, early enough to plan.
+- **Which parts of the land grow the most**, and which are consistently thin.
+- **Whether the land is recovering or declining** over many years, beyond the swing between wet and dry years.
+
+## What it would take
+
+::: {.what-it-takes}
+| | |
+|---|---|
+| Effort | Low. The national data is updated every year. A yearly report like this one can be rebuilt automatically. |
+| Cost | No data cost. Some staff or contractor time to keep the report running. |
+| Skills | Reading maps and charts. Running the report needs one person comfortable with computers, or a partner. |
+| Checking on the ground | The satellite estimates get much more trustworthy when compared with a few clipped plots or photo points each year. |
+| What the team would own | Any ground checks, notes, and pasture boundaries they choose to add. |
+:::
+
+::: {.their-call}
+### Questions only the Wolakota team can answer
+- Is yearly forage something the team already tracks another way?
+- Would a report like this be used, and by whom: range staff, leadership, or partners?
+- Should pasture boundaries ever be added, and who would decide who sees them?
+:::
+
+
+## Which land is included
+
+The vegetation analysis uses a fixed 2024 Annual NLCD grassland/herbaceous and shrub/scrub mask. Mapped crops, hay/pasture, developed land, forests, wetlands and water are excluded. The mask does not identify native species or irrigation. Historical summaries use this same footprint each year, so they describe vegetation change on the selected footprint rather than changes in land use.
+
+```{python}
+#| output: asis
+fraction = show.MANIFEST.get("eligible_grid_fraction_pct")
+if fraction is not None:
+    print(f"Eligible cells cover {fraction:.1f}% of the analysis bounding grid (before clipping to the regional outline). RAP builds require at least 90% valid data on eligible cells in each year.")
+```
+
+
+```{python}
+#| output: asis
+eligible_acres = show.MANIFEST.get("eligible_acres")
+if eligible_acres is not None:
+    print(f"The regional analysis footprint contains approximately {eligible_acres:,.0f} eligible acres, measured on the land-cover analysis grid.")
+```

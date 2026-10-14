@@ -21,7 +21,7 @@ if ok:
     b["km_from_campus"] = [show.km_between(campus["lat"], campus["lon"], p.y, p.x) for p in reps]
     near = b[b.km_from_campus <= 60]
     print(f"""::: {{.lead}}
-Satellite data for {yr} shows **{len(b)} blocks of open grassland of at least {rules['min_block_acres']:,} acres** in the region, {len(near)} of them centered within 60 km (about 40 miles) of campus. These are places worth a conversation, not proposed sites.
+Satellite data for {yr} shows **{len(b)} blocks of open grassland of at least {rules['min_block_acres']:,} acres** in the region, {len(near)} of them centered within 60 km (about 40 miles) of campus. These are places worth a conversation.
 :::
 """)
 else:

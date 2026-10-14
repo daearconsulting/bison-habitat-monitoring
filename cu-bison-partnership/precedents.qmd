@@ -11,7 +11,7 @@ print(show.preview_banner())
 ```
 
 ::: {.lead}
-Within an hour or two of Boulder, public institutions already raise buffalo and send them to Tribal Nations. A CU partnership would join this work, not invent it.
+Within an hour or two of Boulder, public institutions already raise buffalo and send them to Tribal Nations. A CU partnership would join this work.
 :::
 
 ## The herds near Boulder

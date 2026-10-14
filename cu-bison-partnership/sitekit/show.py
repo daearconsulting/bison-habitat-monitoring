@@ -121,11 +121,12 @@ def base_map() -> folium.Map:
     a = area()
     minx, miny, maxx, maxy = a.total_bounds
     m = folium.Map(tiles=None, control_scale=True, zoom_snap=0.25, scrollWheelZoom=False)
-    folium.TileLayer("CartoDB positron", name="Light map", control=True).add_to(m)
     folium.TileLayer(
-        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        attr="Esri World Imagery", name="Satellite photo", control=True, show=False,
+        tiles="https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attr='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        name="OpenStreetMap", control=True, max_zoom=19,
     ).add_to(m)
+    folium.FeatureGroup(name="Data only (no basemap)", overlay=False, show=False).add_to(m)
     m.fit_bounds([[miny, minx], [maxy, maxx]])
     return m
 
@@ -299,7 +300,7 @@ def static_map(m):
     minx, miny, maxx, maxy = area().total_bounds
     ax.set(xlim=(minx,maxx), ylim=(miny,maxy), xlabel="Longitude", ylabel="Latitude")
     ax.set_aspect(1 / np.cos(np.deg2rad((miny+maxy)/2)))
-    ax.set_title("Public-data illustration — see source and limitations on this page")
+    ax.set_title("Public-data illustration, see source and limitations on this page")
     return _static_image(fig, "Printable map of the visible thematic layers; background tiles omitted")
 
 

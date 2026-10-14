@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 """Figure and map helpers for the website pages.
 
 Pages call these with a line or two each, so the .qmd files stay readable as
 plain-language documents. Nothing here downloads anything; it only reads
 data/processed/ (built by scripts/build_data.py).
 """
-from __future__ import annotations
 
 import base64
 import io
@@ -80,7 +81,7 @@ def latest_year() -> int | None:
 # Loaders
 
 def area() -> gpd.GeoDataFrame:
-    return gpd.read_file(PROCESSED / "area.geojson")
+    return gpd.read_file(PROCESSED/"area.geojson")
 
 
 def area_acres() -> float:
@@ -88,18 +89,18 @@ def area_acres() -> float:
 
 
 def rap_series() -> pd.DataFrame:
-    return pd.read_csv(PROCESSED / "rap_annual.csv")
+    return pd.read_csv(PROCESSED/"rap_annual.csv")
 
 
 def drought_weekly() -> pd.DataFrame:
-    df = pd.read_csv(PROCESSED / "drought_weekly.csv", parse_dates=["date"])
+    df = pd.read_csv(PROCESSED/"drought_weekly.csv", parse_dates=["date"])
     # Average the counties so the chart shows one region-wide picture.
     cols = ["none", "d0", "d1", "d2", "d3", "d4"]
     return df.groupby("date", as_index=False)[cols].mean()
 
 
 def raster_stats(name: str) -> dict:
-    with rasterio.open(PROCESSED / name) as src:
+    with rasterio.open(PROCESSED/name) as src:
         a = src.read(1)
     v = a[np.isfinite(a)]
     return {"mean": float(v.mean()), "p10": float(np.percentile(v, 10)),
@@ -120,11 +121,12 @@ def base_map() -> folium.Map:
     a = area()
     minx, miny, maxx, maxy = a.total_bounds
     m = folium.Map(tiles=None, control_scale=True, zoom_snap=0.25, scrollWheelZoom=False)
-    folium.TileLayer("CartoDB positron", name="Light map", control=True).add_to(m)
     folium.TileLayer(
-        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        attr="Esri World Imagery", name="Satellite photo", control=True, show=False,
+        tiles="https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attr='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        name="OpenStreetMap", control=True, max_zoom=19,
     ).add_to(m)
+    folium.FeatureGroup(name="Data only (no basemap)", overlay=False, show=False).add_to(m)
     m.fit_bounds([[miny, minx], [maxy, maxx]])
     return m
 

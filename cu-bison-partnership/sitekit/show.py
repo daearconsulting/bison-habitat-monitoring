@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 """Figure and map helpers for the website pages.
 
 Pages call these with a line or two each, so the .qmd files stay readable as
 plain-language documents. Nothing here downloads anything; it only reads
 data/processed/ (built by scripts/build_data.py).
 """
-from __future__ import annotations
 
 import base64
 import io
@@ -80,7 +81,7 @@ def latest_year() -> int | None:
 # Loaders
 
 def area() -> gpd.GeoDataFrame:
-    return gpd.read_file(PROCESSED / "area.geojson")
+    return gpd.read_file(PROCESSED/"area.geojson")
 
 
 def area_acres() -> float:
@@ -92,7 +93,7 @@ def rap_series() -> pd.DataFrame:
 
 
 def drought_weekly() -> pd.DataFrame:
-    df = pd.read_csv(PROCESSED / "drought_weekly.csv", parse_dates=["date"])
+    df = pd.read_csv(PROCESSED/"drought_weekly.csv", parse_dates=["date"])
     # Average the counties so the chart shows one region-wide picture.
     cols = ["none", "d0", "d1", "d2", "d3", "d4"]
     return df.groupby("date", as_index=False)[cols].mean()
@@ -252,7 +253,7 @@ def places_layer(m: folium.Map, places: list[dict]) -> None:
 
 
 def blocks() -> gpd.GeoDataFrame:
-    return gpd.read_file(PROCESSED / "grassland_blocks.geojson")
+    return gpd.read_file(PROCESSED/"grassland_blocks.geojson")
 
 
 def km_between(lat1, lon1, lat2, lon2) -> float:

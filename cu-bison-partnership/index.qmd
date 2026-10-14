@@ -11,7 +11,7 @@ print(show.preview_banner())
 ```
 
 ::: {.lead}
-Colorado already has working examples of public institutions raising buffalo and returning them to Tribal Nations. CU Boulder could join that work in a way that fits a research university: through science, teaching, and long-term relationships with Tribal Nations, with Tribal Nations guiding the parts that are theirs to guide.
+Colorado already has working examples of public institutions raising buffalo and returning them to Tribal Nations. CU Boulder could join that work in a way that fits a research university: through science, teaching, and long-term relationships with Tribal Nations.
 :::
 
 ::: {.facts}
@@ -51,7 +51,7 @@ acres of grassland, approximately, on Wolakota: a Tribally owned and managed ran
 
 ## The question
 
-Leaders at CU Boulder have reasonably asked what role a university has in a buffalo herd. Colorado's own examples suggest an answer: **a university does not need to own a herd to play an essential role in one.** It brings research, students, convening power, and long-term commitment.
+Leaders at CU Boulder have reasonably asked what role a university has in a buffalo herd. Colorado's own examples suggest an answer: **a university does not need to own a herd to play an essential role in one.** CU could bring research, students, convening power, and long-term commitment.
 
 ## What CU could bring
 

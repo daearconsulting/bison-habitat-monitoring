@@ -1,5 +1,5 @@
-"""Paths and site settings shared by every module."""
 from __future__ import annotations
+"""Paths and site settings shared by every module."""
 
 import json
 from datetime import datetime, timezone
@@ -10,8 +10,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 import os
 PROCESSED = Path(os.environ.get("SITEKIT_PROCESSED", ROOT / "data" / "processed"))
-CACHE = ROOT / "data" / "cache"
-MANIFEST = PROCESSED / "manifest.json"
+CACHE = ROOT/"data"/"cache"
+MANIFEST = PROCESSED/"manifest.json"
 
 # Equal-area projection for anything measured in acres or meters.
 CRS_GEO = "EPSG:4326"
@@ -20,7 +20,7 @@ CRS_AREA = "EPSG:5070"
 
 def load_site() -> dict:
     """Read site.yaml (the one place where place-specific settings live)."""
-    with open(ROOT / "site.yaml", encoding="utf-8") as f:
+    with open(ROOT/"site.yaml", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 

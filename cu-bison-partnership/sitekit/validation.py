@@ -39,7 +39,7 @@ def validate(directory=PROCESSED, allow_demo=False):
         if not products[key].issubset(files):
             raise ValueError(f"Dataset {key} omits required output files")
         for name in files:
-            path = (directory / name).resolve()
+            path = (directory/name).resolve()
             if not path.is_relative_to(directory.resolve()) or not path.is_file():
                 raise ValueError(f"Missing or invalid dataset path: {name}")
             if path.suffix == ".tif":
@@ -56,8 +56,8 @@ def validate(directory=PROCESSED, allow_demo=False):
                     raise ValueError(f"Invalid geometry: {name}")
                 if name == "area.geojson" and (frame.empty or "acres" not in frame or frame.acres.sum() <= 0):
                     raise ValueError("Study area is empty or lacks acreage")
-    if "rap" in expected and (directory / "rap_annual.csv").exists():
-        df = pd.read_csv(directory / "rap_annual.csv")
+    if "rap" in expected and (directory/"rap_annual.csv").exists():
+        df = pd.read_csv(directory/"rap_annual.csv")
         cols = ["year", "forage_total_lbs_ac", "cover_annual_grass_forb_pct", "cover_perennial_grass_forb_pct"]
         if not set(cols).issubset(df.columns) or len(df) < 15 or df.year.duplicated().any():
             raise ValueError("RAP history needs at least 15 unique years and required columns")

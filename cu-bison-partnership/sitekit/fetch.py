@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Download public data and write small, site-ready products to data/processed/.
 
 One data source is used: the Rangeland Analysis Platform (RAP) v3, yearly
@@ -10,7 +12,6 @@ whether they would ever consider a herd, is a conversation for people, not a
 dataset. Ownership layers (e.g., Colorado COMaP or USGS PAD-US) can be added
 later as a separate, optional step.
 """
-from __future__ import annotations
 
 import logging
 from datetime import date

@@ -1,5 +1,6 @@
-"""Synthetic preview data so the layout can be checked offline. Never publish a demo build."""
 from __future__ import annotations
+
+"""Synthetic preview data so the layout can be checked offline. Never publish a demo build."""
 
 import numpy as np
 from scipy.ndimage import gaussian_filter, zoom
@@ -28,10 +29,10 @@ def build_demo(site: dict, manifest: dict) -> None:
     cover[COVER["perennial"]] = np.clip(15 + 55 * _field(shp, 40) * np.clip(cols * 3, 0, 1), 0, 90)
     cover[COVER["bare"]] = 10 + 40 * (_field(shp, 25) > 0.8)
     grass, blocks = grassland_blocks(cover, t, pixel_m, site["grassland"])
-    write_tif(PROCESSED / "rap_perennial_cover.tif", cover[COVER["perennial"]], t)
-    write_tif(PROCESSED / "rap_tree_cover.tif", cover[COVER["tree"]], t)
-    write_tif(PROCESSED / "open_grassland.tif", np.where(grass, 1.0, np.nan), t)
-    blocks.to_file(PROCESSED / "grassland_blocks.geojson", driver="GeoJSON")
+    write_tif(PROCESSED/"rap_perennial_cover.tif", cover[COVER["perennial"]], t)
+    write_tif(PROCESSED/"rap_tree_cover.tif", cover[COVER["tree"]], t)
+    write_tif(PROCESSED/"open_grassland.tif", np.where(grass, 1.0, np.nan), t)
+    blocks.to_file(PROCESSED/"grassland_blocks.geojson", driver="GeoJSON")
     manifest["latest_rap_year"] = 2024
     record(manifest, "rap", status="demo", source="Synthetic preview data", url="",
            note="Not real data. Rebuild with `python scripts/build_data.py` before sharing.")

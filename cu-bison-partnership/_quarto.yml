@@ -28,7 +28,7 @@ website:
       - href: sources.qmd
         text: "Sources"
   page-footer:
-    left: "A discussion resource built from public information. Not a CU Boulder or Tribal proposal."
+    left: "A discussion resource built from public information."
     right: "Prepared by Lilly Jones, PhD"
 
 format:

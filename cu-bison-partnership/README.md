@@ -18,7 +18,7 @@ A short website for CU Boulder leaders and potential partners explaining why a r
 ## Data and facts
 
 - **Map:** Rangeland Analysis Platform v3 vegetation cover (latest year available). Grassland blocks are contiguous areas meeting the rules in `site.yaml` (perennial grass and forb cover, tree cover, bare ground, minimum size). Land ownership is deliberately not included.
-- **Herd facts:** cited on the Sources page (CSU, Denverite, WWF, Wikipedia, CU's CNAIS site). Re-check numbers before a meeting; transfer totals grow every year.
+- **Herd facts:** cited on the Sources page (CSU, Denverite, WWF, CU's CNAIS site). Re-check numbers before a meeting; transfer totals grow every year.
 - **Herd locations** in `site.yaml` are approximate, for orientation only.
 
 ## Publish it on GitHub (one time, about 15 minutes)

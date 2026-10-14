@@ -25,12 +25,12 @@ def run(main):
         if result.returncode:
             return result.returncode
         # Run validation in a fresh process with the staged path.
-        command = [sys.executable, str(ROOT / "scripts/check_data.py")]
+        command = [sys.executable, str(ROOT/"scripts/check_data.py")]
         if "--demo" in sys.argv:
             command += ["--allow-demo"]
         if subprocess.run(command, env=env).returncode:
             return 1
-        backup = data / "processed.previous"
+        backup = data/"processed.previous"
         if backup.exists():
             raise RuntimeError("A previous interrupted promotion needs inspection: " + str(backup))
         if PROCESSED.exists():
